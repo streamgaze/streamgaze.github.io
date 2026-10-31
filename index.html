@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StreamGaze: Gaze-Guided Temporal Reasoning and Proactive Understanding in Streaming Videos</title>
+
   <!-- Meta tags for social media banners -->
   <meta name="description" content="StreamGaze: Gaze-Guided Temporal Reasoning and Proactive Understanding in Streaming Videos">
   <meta property="og:title" content="StreamGaze: Gaze-Guided Temporal Reasoning and Proactive Understanding in Streaming Videos"/>
@@ -10,532 +13,347 @@
   <meta property="og:image" content="img/icon.png" />
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-
   <meta name="twitter:title" content="StreamGaze: Gaze-Guided Temporal Reasoning and Proactive Understanding in Streaming Videos">
   <meta name="twitter:description" content="The first benchmark designed to evaluate how effectively MLLMs use gaze for temporal and proactive reasoning in streaming videos.">
   <meta name="twitter:image" content="img/icon.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="keywords" content="gaze, streaming video understanding, multimodal LLM, benchmark, proactive reasoning">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="img/icon.png">
 
-  <title>StreamGaze</title>
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script src="static/js/bulma-carousel.min.js"></script>
-  <script src="static/js/bulma-slider.min.js"></script>
-  <script src="static/js/index.js"></script>
-
-  <link rel="stylesheet" href="./static/css/twentytwenty.css">
-  <style>
-    body, html {
-      font-family: 'Sora', sans-serif !important;
-      font-weight: 500 !important;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Sora', sans-serif !important;
-      font-weight: 700 !important;
-    }
-
-    p, span, a, li, td, th, div {
-      font-family: 'Sora', sans-serif !important;
-      font-weight: 500 !important;
-    }
-
-    .custom-slider-container {
-        width: 100%;
-        max-width: 900px;
-        margin: 0 auto;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .custom-slider {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
-
-    .custom-slide {
-        min-width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .task-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 15px;
-        padding: 20px;
-        margin: 10px;
-        color: white;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .task-card.past {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    }
-
-    .task-card.present {
-        background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
-    }
-
-    .task-card.proactive {
-        background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
-    }
-
-    .contribution-box {
-        background: #f5f5f5;
-        border-left: 4px solid #667eea;
-        padding: 15px 20px;
-        margin: 10px 0;
-        border-radius: 0 10px 10px 0;
-    }
-
-    .benchmark-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 14px;
-    }
-
-    .benchmark-table th, .benchmark-table td {
-        border: 1px solid #ddd;
-        padding: 12px 8px;
-        text-align: center;
-    }
-
-    .benchmark-table th {
-        background-color: #667eea;
-        color: white;
-    }
-
-    .benchmark-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .benchmark-table tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    .highlight-row {
-        background-color: #e8f4fd !important;
-        font-weight: bold;
-    }
-
-    .text-with-margin {
-      margin-top: 10px;
-      margin-bottom: 50px;
-    }
-
-    .gaze-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, #00c853, #ffeb3b, #ff4081) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-      background-clip: text !important;
-      font-family: 'Sora', sans-serif !important;
-      font-weight: 700 !important;
-      font-size: 1.15em !important;
-      letter-spacing: 0.5px !important;
-      display: inline-block !important;
-    }
-
-    .publication-title {
-      font-family: 'Sora', sans-serif !important;
-      font-weight: 600 !important;
-    }
-
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <script>
+    // apply saved / OS theme before paint
+    (function () {
+      var t = localStorage.getItem('sg-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 </head>
 <body>
 
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <!-- venue badge -->
-            <span style="display:inline-block; background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:6px 18px; border-radius:20px; font-size:15px; font-weight:700; letter-spacing:0.5px; margin-bottom:12px;">
-              NeurIPS 2026
-            </span>
+  <div class="progress" id="progress"></div>
 
-            <!-- title -->
-            <h1 class="title is-3 publication-title">
-              👁️ <span class="gradient-text">StreamGaze</span>: Gaze-Guided Temporal Reasoning and<br>
-              Proactive Understanding in Streaming Videos
-            </h1>
-            
-            <!-- authors -->
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="https://daeunni.github.io/" target="_blank">Daeun Lee</a><sup>1</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="https://subhojyoti.github.io/" target="_blank">Subhojyoti Mukherjee</a><sup>2</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="https://bkveton.com/" target="_blank">Branislav Kveton</a><sup>2</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="http://ryanrossi.com/" target="_blank">Ryan A. Rossi</a><sup>2</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="https://laiviet.github.io/" target="_blank">Viet Dac Lai</a><sup>2</sup>,
-              </span> &nbsp;
-              <br>
-              <span class="author-block">
-                <a href="https://david-yoon.github.io/" target="_blank">Seunghyun Yoon</a><sup>2</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="https://sites.google.com/site/trungbuistanford/" target="_blank">Trung Bui</a><sup>2</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="http://francky.me/" target="_blank">Franck Dernoncourt</a><sup>2</sup>,
-              </span> &nbsp;
-              <span class="author-block">
-                <a href="https://www.cs.unc.edu/~mbansal/" target="_blank">Mohit Bansal</a><sup>1</sup>
-              </span>
-            </div>
-            
-            <!-- affiliations -->
-            <div class="is-size-5 publication-authors" style="margin-top:10px;">
-              <span class="author-block"><sup>1</sup>UNC Chapel Hill</span> &nbsp;&nbsp;
-              <span class="author-block"><sup>2</sup>Adobe Research</span>
-            </div>
-
-            <!-- Paper link -->
-            <div style="margin-top: 20px;">
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2512.01707" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-
-              <!-- Github link -->
-              <span class="link-block">
-                <a href="https://github.com/daeunni/StreamGaze" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                </a>
-              </span>
-
-              <!-- Dataset link -->
-              <span class="link-block">
-                <a href="https://huggingface.co/datasets/danaleee/StreamGaze" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fas fa-database"></i>
-                  </span>
-                  <span>Dataset</span>
-                </a>
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </div>
+  <!-- ============ NAV ============ -->
+  <nav class="nav" id="nav">
+    <a class="nav-brand" href="#top"><img src="img/icon.png" alt=""><span>StreamGaze</span></a>
+    <div class="nav-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#contributions">Contributions</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#results">Results</a>
+      <a href="#bibtex">BibTeX</a>
     </div>
-  </section>
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+      <i class="fa-solid fa-moon"></i><i class="fa-solid fa-sun"></i>
+    </button>
+  </nav>
 
-  <!-- TLDR -->
-  <section class="section" style="padding: 1.5rem 1.5rem;">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-four-fifths">
-          <div style="background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%); border-radius: 15px; padding: 25px 30px; border-left: 5px solid #667eea;">
-            <h3 style="margin-bottom: 15px; font-size: 1.3rem;">📌 TL;DR</h3>
-            <p style="font-size: 17px; margin: 0; line-height: 1.6;">
-              We introduce <b>StreamGaze</b>, the first benchmark for evaluating how well MLLMs can use <b>human gaze signals</b> for temporal reasoning in <b>streaming egocentric videos</b>. 
-            </p>
-          </div>
-        </div>
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <canvas id="gaze-canvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <span class="venue">NeurIPS 2026</span>
+      <h1 class="title">
+        <span class="gradient-text">StreamGaze</span><span class="title-rest">: Gaze-Guided Temporal Reasoning and
+        Proactive Understanding in Streaming Videos</span>
+      </h1>
+
+      <div class="authors">
+        <a href="https://daeunni.github.io/" target="_blank">Daeun Lee<sup>1</sup></a>
+        <a href="https://subhojyoti.github.io/" target="_blank">Subhojyoti Mukherjee<sup>2</sup></a>
+        <a href="https://bkveton.com/" target="_blank">Branislav Kveton<sup>2</sup></a>
+        <a href="http://ryanrossi.com/" target="_blank">Ryan A. Rossi<sup>2</sup></a>
+        <a href="https://laiviet.github.io/" target="_blank">Viet Dac Lai<sup>2</sup></a>
+        <a href="https://david-yoon.github.io/" target="_blank">Seunghyun Yoon<sup>2</sup></a>
+        <a href="https://sites.google.com/site/trungbuistanford/" target="_blank">Trung Bui<sup>2</sup></a>
+        <a href="http://francky.me/" target="_blank">Franck Dernoncourt<sup>2</sup></a>
+        <a href="https://www.cs.unc.edu/~mbansal/" target="_blank">Mohit Bansal<sup>1</sup></a>
       </div>
-    </div>
-  </section>
-
-  <!-- Demo Video -->
-  <div class="container is-max-desktop" style="margin-top: 20px;">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <video id="demo-video" width="100%" autoplay loop muted playsinline controls style="border-radius: 10px;">
-          <source src="video_test.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+      <div class="affiliations">
+        <span><sup>1</sup>UNC Chapel Hill</span>
+        <span><sup>2</sup>Adobe Research</span>
       </div>
-    </div>
-  </div>
 
-  <!-- Paper abstract -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
-            <p style="font-size:18px;">
-              Streaming video understanding requires models not only to process temporally incoming frames, but also to <b>anticipate user intention</b> for realistic applications like AR glasses. 
-              While prior streaming benchmarks evaluate temporal reasoning, <b>none measure whether MLLMs can interpret or leverage human gaze signals</b> within a streaming setting. 
-              To fill this gap, we introduce <b>StreamGaze</b>, the first benchmark designed to evaluate how effectively MLLMs use gaze for temporal and proactive reasoning in streaming videos. 
-              StreamGaze introduces <b>gaze-guided past, present, and proactive tasks</b> that comprehensively evaluate streaming video understanding. 
-              These tasks assess whether models can use real-time gaze to follow shifting attention and infer user intentions from only past and currently observed frames. 
-              To build StreamGaze, we develop a <b>gaze-video QA generation pipeline</b> that aligns egocentric videos with raw gaze trajectories via fixation extraction, region-specific visual prompting, and scanpath construction. 
-              This pipeline produces spatio-temporally grounded QA pairs that closely reflect human perceptual dynamics. 
-              Across all StreamGaze tasks, we observe <b>substantial performance gaps</b> between state-of-the-art MLLMs and human performance, revealing fundamental limitations in gaze-based temporal reasoning, intention modeling, and proactive prediction.
-            </p>
-          </div>
-        </div>
+      <div class="links">
+        <a class="btn" href="https://arxiv.org/abs/2512.01707" target="_blank"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+        <a class="btn" href="https://github.com/daeunni/StreamGaze" target="_blank"><i class="fa-brands fa-github"></i>Code</a>
+        <a class="btn" href="https://huggingface.co/datasets/danaleee/StreamGaze" target="_blank"><i class="fa-solid fa-database"></i>Dataset</a>
       </div>
+
+      <p class="gaze-hint"><span class="dot"></span>Move your cursor: you're drawing a gaze scanpath.</p>
     </div>
-  </section>
-  <!-- End paper abstract -->
+    <a class="scroll-cue" href="#tldr" aria-label="Scroll down"><i class="fa-solid fa-chevron-down"></i></a>
+  </header>
 
+  <main>
 
-  <!-- Task Taxonomy -->
-
-  <section class="section hero">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h3 class="title is-3">📊 StreamGaze Task Taxonomy</h3>
-          <p style="font-size:18px; margin-bottom:30px;">
-            StreamGaze provides a unified suite of gaze-conditioned tasks spanning <b>past</b>, <b>present</b>, and <b>proactive</b> reasoning.
+    <!-- ============ TL;DR + STATS ============ -->
+    <section class="section" id="tldr">
+      <div class="container narrow">
+        <div class="tldr reveal">
+          <div class="tldr-label">📌 TL;DR</div>
+          <p>
+            We introduce <b>StreamGaze</b>, the first benchmark for evaluating how well MLLMs can use <b>human gaze signals</b> for temporal reasoning in <b>streaming egocentric videos</b>.
           </p>
-              <!-- Teaser Figure -->
-  <div class="columns is-centered has-text-centered">
-    <div class="column" style="max-width: 1100px;">
-      <img src="img/main_streamgaze.png" alt="StreamGaze Task Taxonomy" width="100%"/>
-      <p style="font-size:14px; color:#666; margin-top:10px;">
-        <b>Figure 1.</b> StreamGaze's task taxonomy. We introduce StreamGaze, the first benchmark designed to evaluate how effectively MLLMs use gaze for temporal and proactive reasoning in streaming videos.
-      </p>
-    </div>
-  </div>
-  
-          <div class="columns">
-            <div class="column">
-              <div class="task-card past">
-                <div class="gaze-icon">⏮️</div>
-                <h4 class="title is-5" style="color:white;">Past Tasks</h4>
-                <ul style="text-align:left; font-size:14px;">
-                  <li>Scene Recall (SR)</li>
-                  <li>Object Transition Prediction (OTP)</li>
-                  <li>Gaze Sequence Matching (GSM)</li>
-                  <li>Non-Fixated Object Identification (NFI)</li>
-                </ul>
-              </div>
-            </div>
-            <div class="column">
-              <div class="task-card present">
-                <div class="gaze-icon">▶️</div>
-                <h4 class="title is-5" style="color:white;">Present Tasks</h4>
-                <ul style="text-align:left; font-size:14px;">
-                  <li>Object Identification (OI-Easy/Hard)</li>
-                  <li>Object Attribute Recognition (OAR)</li>
-                  <li>Gaze Target Anticipation (GTA)</li>
-                </ul>
-              </div>
-            </div>
-            <div class="column">
-              <div class="task-card proactive">
-                <div class="gaze-icon">⏭️</div>
-                <h4 class="title is-5" style="color:white;">Proactive Tasks</h4>
-                <ul style="text-align:left; font-size:14px;">
-                  <li>Future Action Prediction (FAP)</li>
-                  <li>Object Appearance Alert (OAA)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat reveal"><div class="stat-num" data-count="8521">0</div><div class="stat-label">QA pairs</div></div>
+          <div class="stat reveal"><div class="stat-num" data-count="10">0</div><div class="stat-label">gaze-guided tasks</div></div>
+          <div class="stat reveal"><div class="stat-num" data-count="815" data-suffix="s">0</div><div class="stat-label">avg. video length</div></div>
+          <div class="stat reveal"><div class="stat-num" data-count="29" data-suffix="pt">0</div><div class="stat-label">gap: best MLLM vs. human</div></div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- End Task Taxonomy -->
+    </section>
 
-
-  <!-- Contributions -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h3 class="title is-3">🎯 Key Contributions</h3>
-          <div class="content has-text-left">
-            
-            <div class="contribution-box">
-              <p style="font-size:17px; margin:0;">
-                <b>1. Gaze-Guided Data Construction Pipeline</b><br>
-                We propose the first gaze-guided data construction pipeline that integrates gaze trajectories with egocentric video to produce spatio-temporally aligned, gaze-guided QA pairs. Our pipeline models full scanpath dynamics, tracking how attention evolves over time.
-              </p>
-            </div>
-            
-            <div class="contribution-box">
-              <p style="font-size:17px; margin:0;">
-                <b>2. StreamGaze Benchmark</b><br>
-                We introduce StreamGaze, the first benchmark specifically designed for streaming gaze-guided video understanding, comprising <b>8,521 QA pairs</b> across <b>10 tasks</b> spanning past, present, and proactive timestamps.
-              </p>
-            </div>
-            
-            <div class="contribution-box">
-              <p style="font-size:17px; margin:0;">
-                <b>3. Comprehensive Evaluation & Analysis</b><br>
-                We evaluate state-of-the-art MLLMs on StreamGaze, uncovering substantial and consistent gaps relative to human performance. Our in-depth analyses reveal that current MLLMs struggle to interpret raw gaze signals.
-              </p>
-            </div>
-            
-          </div>
-        </div>
+    <!-- ============ ABSTRACT ============ -->
+    <section class="section alt" id="abstract">
+      <div class="container narrow">
+        <h2 class="section-title reveal">Abstract</h2>
+        <p class="abstract reveal">
+          Streaming video understanding requires models not only to process temporally incoming frames, but also to <mark>anticipate user intention</mark> for realistic applications like AR glasses.
+          While prior streaming benchmarks evaluate temporal reasoning, <mark>none measure whether MLLMs can interpret or leverage human gaze signals</mark> within a streaming setting.
+          To fill this gap, we introduce <mark>StreamGaze</mark>, the first benchmark designed to evaluate how effectively MLLMs use gaze for temporal and proactive reasoning in streaming videos.
+          StreamGaze introduces <mark>gaze-guided past, present, and proactive tasks</mark> that comprehensively evaluate streaming video understanding.
+          These tasks assess whether models can use real-time gaze to follow shifting attention and infer user intentions from only past and currently observed frames.
+          To build StreamGaze, we develop a <mark>gaze-video QA generation pipeline</mark> that aligns egocentric videos with raw gaze trajectories via fixation extraction, region-specific visual prompting, and scanpath construction.
+          This pipeline produces spatio-temporally grounded QA pairs that closely reflect human perceptual dynamics.
+          Across all StreamGaze tasks, we observe <mark>substantial performance gaps</mark> between state-of-the-art MLLMs and human performance, revealing fundamental limitations in gaze-based temporal reasoning, intention modeling, and proactive prediction.
+        </p>
       </div>
-    </div>
-  </section>
-  <!-- End Contributions -->
+    </section>
 
-
-  <!-- Method -->
-  <section class="section hero">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-sixths">
-          <h3 class="title is-3">🔧 Data Construction Pipeline</h3>
-          <div class="content has-text-justified">
-            <img src="img/pipeline.png" alt="Data Construction Pipeline"/>
-            <p style="font-size:18px; margin-top:30px;">
-              Our gaze-video QA generation pipeline aligns egocentric videos with raw gaze trajectories through four key stages:
-              <br><br>
-              <b>(1) Input:</b> Given egocentric video sources and raw gaze projections.
-              <br><br>
-              <b>(2) Fixation Extraction:</b> We first extract fixation moments across the entire video.
-              <br><br>
-              <b>(3) Region-Specific Visual Prompting:</b> Next, we divide each frame into FOV and out-of-FOV regions and extract objects within the gaze area.
-              <br><br>
-              <b>(4) Scanpath Construction & QA Generation:</b> Finally, we construct scanpaths and generate streaming QA pairs.
-            </p>      
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- End Method -->
-
-
-  <!-- Benchmark Comparison -->
-  <section class="hero is-small is-light">
-    <div class="hero-body">
-      <div class="container is-max-desktop" style="margin-top:5px;">
-        <div class="section-title has-text-centered">
-          <h2 class="title is-3">📈 Benchmark Comparison</h2>
-        </div>
-        
-        <p style="font-size:18px; text-align:center; margin-bottom:20px;">
-          Comparison of streaming video understanding benchmarks with StreamGaze.
+    <!-- ============ TASK TAXONOMY ============ -->
+    <section class="section" id="tasks">
+      <div class="container">
+        <h2 class="section-title reveal">📊 StreamGaze Task Taxonomy</h2>
+        <p class="section-sub reveal">
+          StreamGaze provides a unified suite of gaze-conditioned tasks spanning <b class="c-past">past</b>, <b class="c-present">present</b>, and <b class="c-proactive">proactive</b> reasoning.
+          <br><span class="muted">Pick a task on the stream timeline and try the example question yourself.</span>
         </p>
 
-        <div class="item pd-image" style="text-align: center;">
-          <img src="./img/comparision.png" width="80%" />
+        <div class="explorer reveal">
+          <div class="timeline">
+            <div class="tl-track">
+              <div class="tl-zone past"><span>⏮️ Past</span></div>
+              <div class="tl-zone present"><span>▶️ Present</span></div>
+              <div class="tl-zone proactive"><span>⏭️ Proactive</span></div>
+              <div class="tl-now"><span>NOW</span></div>
+            </div>
+            <div class="tl-tasks" id="task-pills"></div>
+          </div>
+
+          <div class="task-panel" id="task-panel" aria-live="polite"></div>
         </div>
-        
-        <p class="text-with-margin" style="font-size:16px; text-align:center; color:#666;">
+
+      </div>
+    </section>
+
+    <!-- ============ CONTRIBUTIONS ============ -->
+    <section class="section alt" id="contributions">
+      <div class="container">
+        <h2 class="section-title reveal">🎯 Key Contributions</h2>
+        <div class="contrib-grid">
+          <article class="contrib reveal">
+            <div class="contrib-num">01</div>
+            <div class="contrib-icon"><i class="fa-solid fa-diagram-project"></i></div>
+            <h3>Gaze-Guided Data Construction Pipeline</h3>
+            <p>We propose the first gaze-guided data construction pipeline that integrates gaze trajectories with egocentric video to produce spatio-temporally aligned, gaze-guided QA pairs. Our pipeline models full scanpath dynamics, tracking how attention evolves over time.</p>
+          </article>
+          <article class="contrib reveal">
+            <div class="contrib-num">02</div>
+            <div class="contrib-icon"><i class="fa-solid fa-eye"></i></div>
+            <h3>StreamGaze Benchmark</h3>
+            <p>We introduce StreamGaze, the first benchmark specifically designed for streaming gaze-guided video understanding, comprising <b>8,521 QA pairs</b> across <b>10 tasks</b> spanning past, present, and proactive timestamps.</p>
+          </article>
+          <article class="contrib reveal">
+            <div class="contrib-num">03</div>
+            <div class="contrib-icon"><i class="fa-solid fa-chart-column"></i></div>
+            <h3>Comprehensive Evaluation &amp; Analysis</h3>
+            <p>We evaluate state-of-the-art MLLMs on StreamGaze, uncovering substantial and consistent gaps relative to human performance. Our in-depth analyses reveal that current MLLMs struggle to interpret raw gaze signals.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PIPELINE ============ -->
+    <section class="section" id="pipeline">
+      <div class="container">
+        <h2 class="section-title reveal">🔧 Data Construction Pipeline</h2>
+        <p class="section-sub reveal">
+          Our gaze-video QA generation pipeline aligns egocentric videos with raw gaze trajectories through four key stages.
+          <br><span class="muted">Click a stage to spotlight it in the figure.</span>
+        </p>
+
+        <div class="pipeline reveal">
+          <div class="steps" id="steps" role="tablist">
+            <button class="step active" data-step="0" role="tab">
+              <span class="step-n">1</span>
+              <span class="step-body"><b>Input</b><small>Given egocentric video sources and raw gaze projections.</small></span>
+            </button>
+            <button class="step" data-step="1" role="tab">
+              <span class="step-n">2</span>
+              <span class="step-body"><b>Fixation Extraction</b><small>We first extract fixation moments across the entire video.</small></span>
+            </button>
+            <button class="step" data-step="2" role="tab">
+              <span class="step-n">3</span>
+              <span class="step-body"><b>Region-Specific Visual Prompting</b><small>Next, we divide each frame into FOV and out-of-FOV regions and extract objects within the gaze area.</small></span>
+            </button>
+            <button class="step" data-step="3" role="tab">
+              <span class="step-n">4</span>
+              <span class="step-body"><b>Scanpath Construction &amp; QA Generation</b><small>Finally, we construct scanpaths and generate streaming QA pairs.</small></span>
+            </button>
+          </div>
+          <div class="pipe-figure">
+            <div class="pipe-stage" id="pipe-stage">
+              <img src="img/pipeline.png" alt="Data Construction Pipeline" class="zoomable">
+              <div class="spotlight" id="spotlight"></div>
+            </div>
+            <div class="pipe-progress"><span id="pipe-bar"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPARISON ============ -->
+    <section class="section alt" id="comparison">
+      <div class="container">
+        <h2 class="section-title reveal">📈 Benchmark Comparison</h2>
+        <p class="section-sub reveal">
+          Comparison of streaming video understanding benchmarks with StreamGaze.
+          <br><span class="muted">Toggle the properties a benchmark must have.</span>
+        </p>
+
+        <div class="card reveal">
+          <div class="filter-row" id="feat-filters">
+            <span class="filter-label">Require:</span>
+            <button class="chip" data-feat="proac"><i class="fa-solid fa-forward"></i> Proactive</button>
+            <button class="chip" data-feat="gaze"><i class="fa-solid fa-eye"></i> Gaze</button>
+            <button class="chip" data-feat="all"><i class="fa-solid fa-clock-rotate-left"></i> All-time</button>
+            <button class="chip" data-feat="ego"><i class="fa-solid fa-head-side-virus"></i> Egocentric</button>
+            <button class="chip ghost" id="feat-all">Select all</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="cmp-table">
+              <thead>
+                <tr>
+                  <th class="left">Dataset</th>
+                  <th>Avg video (s)</th>
+                  <th>QA pairs</th>
+                  <th>QA type</th>
+                  <th>Annotation</th>
+                  <th>Proac.</th>
+                  <th>Gaze</th>
+                  <th>All-time</th>
+                  <th>Ego.</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="cmp-msg" id="cmp-msg"></p>
+          <p class="legend-note">✓ yes &nbsp;·&nbsp; ✗ no &nbsp;·&nbsp; △ partial &nbsp;·&nbsp; MC: multiple choice, OE: open-ended
+            &nbsp;·&nbsp; <a href="#" data-zoom="img/comparision.png">view original table</a></p>
+        </div>
+
+        <p class="section-foot reveal">
           StreamGaze is the <b>first and only</b> benchmark that combines gaze signals with proactive reasoning across all temporal dimensions in egocentric streaming videos.
         </p>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <!-- ============ RESULTS ============ -->
+    <section class="section" id="results">
+      <div class="container">
+        <h2 class="section-title reveal">📊 Main Results</h2>
 
-  <!-- Quantitative Results -->
-  <section class="hero is-small">
-    <div class="hero-body">
-      <div class="container is-max-desktop" style="margin-top:5px;">
-        <div class="section-title has-text-centered">
-          <h2 class="title is-3">📊 Main Results</h2>
+        <div class="card viz-root reveal">
+          <div class="filter-row">
+            <span class="filter-label">Task:</span>
+            <div class="seg" id="task-select"></div>
+          </div>
+          <div class="filter-row">
+            <span class="filter-label">Show:</span>
+            <div class="seg small" id="metric-select">
+              <button class="active" data-metric="acc">Accuracy</button>
+              <button data-metric="gap">Gap to human</button>
+            </div>
+            <div class="legend" id="chart-legend"></div>
+          </div>
+          <div class="chart" id="bar-chart"></div>
+          <div class="tooltip" id="tooltip" role="tooltip"></div>
         </div>
-        
-        <div class="spacer"></div>
 
-        <div class="item pd-image" style="text-align: center;">
-          <img src="./img/table.png" width="90%" />
+        <div class="card viz-root reveal">
+          <div class="filter-row">
+            <span class="filter-label">Leaderboard:</span>
+            <div class="seg small" id="group-select"></div>
+            <label class="switch"><input type="checkbox" id="heat-toggle" checked><span></span>Heatmap</label>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table results" id="res-table"></table>
+          </div>
+          <p class="legend-note">Click a column header to sort. <b>Bold</b> = best model per column (excluding human).
+            &nbsp;·&nbsp; <a href="#" data-zoom="img/table.png">view original table</a></p>
         </div>
-           
-        <p class="text-with-margin" style="font-size:18px;">
-          Across all StreamGaze tasks, we observe <b>substantial performance gaps</b> between state-of-the-art MLLMs (e.g., GPT-4o, InternVL-3.5) and human performance. 
-          Current MLLMs struggle to:
-          <br>• Leverage gaze signals for temporal reasoning
-          <br>• Model user intention from gaze patterns
-          <br>• Make proactive predictions based on observed gaze dynamics
-        </p>
+
+        <div class="takeaway reveal">
+          <p>
+            Across all StreamGaze tasks, we observe <b>substantial performance gaps</b> between state-of-the-art MLLMs (e.g., GPT-4o, InternVL-3.5) and human performance.
+            Current MLLMs struggle to:
+          </p>
+          <ul>
+            <li><i class="fa-solid fa-clock-rotate-left"></i>Leverage gaze signals for temporal reasoning</li>
+            <li><i class="fa-solid fa-user-astronaut"></i>Model user intention from gaze patterns</li>
+            <li><i class="fa-solid fa-forward"></i>Make proactive predictions based on observed gaze dynamics</li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-
-
-
-  <!-- BibTeX citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>@misc{lee2025streamgazegazeguidedtemporalreasoning,
-        title={StreamGaze: Gaze-Guided Temporal Reasoning and Proactive Understanding in Streaming Videos}, 
-        author={Daeun Lee and Subhojyoti Mukherjee and Branislav Kveton and Ryan A. Rossi and Viet Dac Lai and Seunghyun Yoon and Trung Bui and Franck Dernoncourt and Mohit Bansal},
-        year={2025},
-        eprint={2512.01707},
-        archivePrefix={arXiv},
-        primaryClass={cs.CV},
-        url={https://arxiv.org/abs/2512.01707}, 
-  }</code></pre>
-    </div>
-  </section>
-
+    <!-- ============ BIBTEX ============ -->
+    <section class="section alt" id="bibtex">
+      <div class="container narrow">
+        <h2 class="section-title reveal">BibTeX</h2>
+        <div class="bib reveal">
+          <button class="copy-btn" id="copy-bib"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+<pre><code id="bib-code">@misc{lee2025streamgazegazeguidedtemporalreasoning,
+  title={StreamGaze: Gaze-Guided Temporal Reasoning and Proactive Understanding in Streaming Videos},
+  author={Daeun Lee and Subhojyoti Mukherjee and Branislav Kveton and Ryan A. Rossi and Viet Dac Lai and Seunghyun Yoon and Trung Bui and Franck Dernoncourt and Mohit Bansal},
+  year={2025},
+  eprint={2512.01707},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2512.01707},
+}</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content">
-            <p>
-              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div class="container narrow">
+      <p>
+        This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+        You are free to borrow the source code of this website, we just ask that you link back to this page in the footer.<br>
+        This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
     </div>
   </footer>
 
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
-  <script src="./static/js/jquery.event.move.js"></script>
-  <script src="./static/js/jquery.twentytwenty.js"></script>
-  <script>
-  $(function(){
-    $(".twentytwenty-container").twentytwenty({
-      default_offset_pct: 0.5,
-      orientation: 'horizontal'
-    });
-  });
-  </script>
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="icon-btn lb-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <img alt="">
+  </div>
 
+  <script src="static/js/main.js"></script>
 </body>
 </html>
-
